@@ -5,38 +5,60 @@ import {
   Dimensions,
   Text,
   Image,
+  Button,
   ImageBackground,
   TouchableOpacity,
-  CheckBox,
 } from 'react-native';
-
+import CheckBox from '@react-native-community/checkbox';
+import {createStackNavigator} from '@react-navigation/stack';
+import User from './User';
 const windowWidth = Dimensions.get('window').width;
 
-const Todos = ({num}) => {
+function Todos({todo, navigation}) {
   const [isSelected, setSelection] = useState(false);
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const Stack = createStackNavigator();
 
   return (
     <View style={styles.container}>
-      <ImageBackground style={styles.image}>
+      <TouchableOpacity
+        style={styles.image}
+        onPress={() => {
+          navigation.navigate('Detail');
+        }}>
         <ImageBackground style={styles.circle}>
-          <Text>{num.id}</Text>
+          <Text>{todo.id}</Text>
         </ImageBackground>
-        <Text style={styles.center}>{num.title}</Text>
-        <CheckBox value={isSelected} onValueChage />
-      </ImageBackground>
+
+        <View style={styles.center}>
+          <Text numberOfLines={1}>{todo.title}</Text>
+        </View>
+      </TouchableOpacity>
+      <CheckBox
+        style={styles.checkbox}
+        disabled={false}
+        value={toggleCheckBox}
+        onValueChange={newValue => setToggleCheckBox(newValue)}
+      />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 5,
     height: 120,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: 'grey',
+
+    // backgroundColor: 'grey',
   },
   image: {
     height: 100,
-    backgroundColor: 'grey',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   circle: {
     backgroundColor: 'white',
@@ -48,8 +70,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   center: {
+    marginLeft: 10,
+    height: 100,
+    width: 250,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  checkbox: {
+    marginLeft: 20,
   },
 });
 

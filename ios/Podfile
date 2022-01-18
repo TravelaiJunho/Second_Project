@@ -12,6 +12,12 @@ target 'Second_Project' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
+  pod 'react-native-mail', :path => '../node_modules/react-native-mail'
+
   target 'Second_ProjectTests' do
     inherit! :complete
     # Pods for testing
