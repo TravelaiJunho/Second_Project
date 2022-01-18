@@ -24,16 +24,46 @@ import {
   CollapseBody,
   AccordionList,
 } from 'accordion-collapse-react-native';
-import email from 'react-native-mail';
+import Mailer from 'react-native-mail';
 
 import {WebView} from 'react-native-webview';
 import {ScrollView} from 'react-native-gesture-handler';
 
-const windowHight = Dimensions.get('window').height;
-
-const windowWidth = Dimensions.get('window').width;
-
 const Userinfo = ({user}) => {
+  handleEmail = () => {
+    Mailer.mail(
+      {
+        subject: 'need help',
+        recipients: ['support@example.com'],
+        ccRecipients: ['supportCC@example.com'],
+        bccRecipients: ['supportBCC@example.com'],
+        body: '<b>A Bold Body</b>',
+        isHTML: true,
+        attachment: {
+          path: '', // The absolute path of the file from which to read data.
+          type: '', // Mime Type: jpg, png, doc, ppt, html, pdf, csv
+          name: '', // Optional: Custom filename for attachment
+        },
+      },
+      (error, event) => {
+        Alert.alert(
+          error,
+          event,
+          [
+            {
+              text: 'Ok',
+              onPress: () => console.log('OK: Email Error Response'),
+            },
+            {
+              text: 'Cancel',
+              onPress: () => console.log('CANCEL: Email Error Response'),
+            },
+          ],
+          {cancelable: true},
+        );
+      },
+    );
+  };
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <ScrollView style={styles.box}>
@@ -45,7 +75,10 @@ const Userinfo = ({user}) => {
         <Text
           style={styles.text}
           // '${user.email}'
-          onPress={this.handleEmail}>
+          onPress={this.handleEmail}
+          title="Email Me"
+          color="#841584"
+          accessabilityLabel="Purple Email Me Button">
           Email: {user.email}
         </Text>
         <Collapse>
@@ -128,14 +161,5 @@ const styles = StyleSheet.create({
     height: '80%',
   },
 });
-handleEmail = () => {
-  const to = ['tiaan@email.com', 'foo@bar.com']; // string or array of email addresses
-  email(to, {
-    // Optional additional arguments
-    cc: ['bazzy@moo.com', 'doooo@daaa.com'], // string or array of email addresses
-    bcc: 'mee@mee.com', // string or array of email addresses
-    subject: 'Show how to use',
-    body: 'Some body right here',
-  }).catch(console.error);
-};
+
 export default Userinfo;
